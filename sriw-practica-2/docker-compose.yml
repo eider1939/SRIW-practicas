@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  virtuoso:
+    image: tenforce/virtuoso
+    container_name: tenforce_virtuoso
+    ports:
+      - "1111:1111"
+      - "8890:8890"
+    volumes:
+      - db:/data
+
+  lodview:
+    depends_on:
+      - virtuoso
+    build: ./lodview
+    image: rendxn/lodview
+    container_name: lodview
+    ports:
+      - "8080:8080"
+
+volumes:
+  db:

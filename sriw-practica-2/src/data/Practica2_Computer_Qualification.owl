@@ -1,0 +1,756 @@
+@prefix : <http://www.computerqualification.com/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.computerqualification.com/> .
+
+<http://www.computerqualification.com/> rdf:type owl:Ontology ;
+                                         owl:imports <http://cookingbigdata.com/linkeddata/ccinstances#> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://cookingbigdata.com/linkeddata/ccinstances#hasCPU
+<http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> owl:inverseOf :Is_CPU_Of ;
+                                                          rdf:type owl:FunctionalProperty ;
+                                                          rdfs:domain <http://www.computerqualification.com/#Computer> ;
+                                                          rdfs:comment "Specifies that the instance is provided with CPU"@en ;
+                                                          rdfs:isDefinedBy <http://cookingbigdata.com/linkeddata/ccinstances> ;
+                                                          rdfs:label "Has CPU"@en .
+
+
+###  http://cookingbigdata.com/linkeddata/ccinstances#hasRAM
+<http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> rdfs:domain <http://www.computerqualification.com/#Computer> ;
+                                                          rdfs:comment "Specifies that the instance is provided with RAM"@en ;
+                                                          rdfs:isDefinedBy <http://cookingbigdata.com/linkeddata/ccinstances> ;
+                                                          rdfs:label "Has RAM"@en .
+
+
+###  http://cookingbigdata.com/linkeddata/ccinstances#hasStorage
+<http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> owl:inverseOf :Is_Storage ;
+                                                              rdfs:domain <http://www.computerqualification.com/#Computer> ;
+                                                              rdfs:comment "Specifies that the instance is provided with storage"@en ;
+                                                              rdfs:isDefinedBy <http://cookingbigdata.com/linkeddata/ccinstances> ;
+                                                              rdfs:label "Has storage"@en .
+
+
+###  http://www.computerqualification.com/Has_CPU_Family
+:Has_CPU_Family rdf:type owl:ObjectProperty ;
+                owl:inverseOf :Is_CPU_Family ;
+                rdf:type owl:TransitiveProperty ;
+                rdfs:domain <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+                rdfs:range <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+                rdfs:comment "Specify the individual's family"@en ;
+                rdfs:label "has_Cpu_Family"@en .
+
+
+###  http://www.computerqualification.com/Has_Competitor
+:Has_Competitor rdf:type owl:ObjectProperty ,
+                         owl:SymmetricProperty ;
+                rdfs:domain <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+                rdfs:range <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+                rdfs:comment "Specify which is your competitor"@en ;
+                rdfs:label "has_Competitor"@en .
+
+
+###  http://www.computerqualification.com/Is_Better_RAM_Than
+:Is_Better_RAM_Than rdf:type owl:ObjectProperty ;
+                    rdfs:domain <http://cookingbigdata.com/linkeddata/ccinstances#ram> ;
+                    rdfs:range <http://cookingbigdata.com/linkeddata/ccinstances#ram> ;
+                    rdfs:comment "Specify the RAM for which the individual is best."@en ;
+                    rdfs:label "Is_Better_RAM_Than"@en .
+
+
+###  http://www.computerqualification.com/Is_CPU_Family
+:Is_CPU_Family rdf:type owl:ObjectProperty ;
+               rdfs:label "Is CPU Family" .
+
+
+###  http://www.computerqualification.com/Is_CPU_Of
+:Is_CPU_Of rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf owl:topObjectProperty ;
+           rdf:type owl:InverseFunctionalProperty ;
+           rdfs:label "Is CPU Of" .
+
+
+###  http://www.computerqualification.com/Is_Faster_RAM_Than
+:Is_Faster_RAM_Than rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :Is_Better_RAM_Than ;
+                    owl:propertyChainAxiom ( :Is_Better_RAM_Than
+                                           ) ;
+                    rdfs:comment "Specify the RAM for which the individual is faster."@en ;
+                    rdfs:label "is_faster_Ram_than"@en .
+
+
+###  http://www.computerqualification.com/Is_Storage
+:Is_Storage rdf:type owl:ObjectProperty ;
+            rdfs:label "Is Storage" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.computerqualification.com/Has_Integrated_Graphics
+:Has_Integrated_Graphics rdf:type owl:DatatypeProperty ;
+                         rdfs:subPropertyOf owl:topDataProperty ;
+                         rdfs:domain <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+                         rdfs:range xsd:boolean ;
+                         rdfs:label "Has_Integrated_Graphics" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.computerqualification.com/Basic_Computer
+:Basic_Computer rdf:type owl:Class ;
+                owl:equivalentClass [ owl:intersectionOf ( [ rdf:type owl:Class ;
+                                                             owl:unionOf ( [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> ;
+                                                                             owl:someValuesFrom :Fast_Storage
+                                                                           ]
+                                                                           [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> ;
+                                                                             owl:someValuesFrom :Slow_Storage
+                                                                           ]
+                                                                         )
+                                                           ]
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> ;
+                                                             owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                             owl:onClass :NormalCPU
+                                                           ]
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> ;
+                                                             owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                             owl:onClass :Small_RAM
+                                                           ]
+                                                         ) ;
+                                      rdf:type owl:Class
+                                    ] ;
+                rdfs:subClassOf <http://www.computerqualification.com/#Computer> ;
+                rdfs:comment "Basic Computer"@en ;
+                rdfs:label "Basic Computer"@en .
+
+
+###  http://www.computerqualification.com/Big_RAM
+:Big_RAM rdf:type owl:Class ;
+         owl:equivalentClass [ rdf:type owl:Class ;
+                               owl:unionOf ( <http://www.computerqualification.com/16gb_Module>
+                                             <http://www.computerqualification.com/32gb_Module>
+                                             <http://www.computerqualification.com/64gb_Module>
+                                           )
+                             ] ;
+         rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#ram> ;
+         rdfs:comment "It is the ram that has 16, 32 or 64 gb"@en ;
+         rdfs:label "BIG RAM"@en .
+
+
+###  http://www.computerqualification.com/Big_Size_Storage
+:Big_Size_Storage rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#storage_size> ;
+                                        owl:someValuesFrom [ rdf:type rdfs:Datatype ;
+                                                             owl:onDatatype xsd:integer ;
+                                                             owl:withRestrictions ( [ xsd:minInclusive 500
+                                                                                    ]
+                                                                                  )
+                                                           ]
+                                      ] ;
+                  rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#storage> ;
+                  rdfs:comment "Represents a storage size big than 500 GB"@en ;
+                  rdfs:label "Big Size Storage"@en .
+
+
+###  http://www.computerqualification.com/Desing_Computer
+:Desing_Computer rdf:type owl:Class ;
+                 rdfs:subClassOf <http://www.computerqualification.com/#Computer> ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> ;
+                                   owl:someValuesFrom :QualityCPU
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> ;
+                                   owl:allValuesFrom :Big_RAM
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> ;
+                                   owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onClass :Fast_Storage
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> ;
+                                   owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                                   owl:onClass :Slow_Storage
+                                 ] ;
+                 rdfs:label "Desing Computer"@en .
+
+
+###  http://www.computerqualification.com/Fast_Storage
+:Fast_Storage rdf:type owl:Class ;
+              owl:equivalentClass [ rdf:type owl:Restriction ;
+                                    owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#storage_technology> ;
+                                    owl:hasValue "SSD"^^xsd:string
+                                  ] ;
+              rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#storage> ;
+              rdfs:comment "It represents a fast storage; SSD"@en ;
+              rdfs:label "Fast Storage"@en .
+
+
+###  http://www.computerqualification.com/GPU
+:GPU rdf:type owl:Class ;
+     owl:equivalentClass [ rdf:type owl:Restriction ;
+                           owl:onProperty :Has_Integrated_Graphics ;
+                           owl:hasValue "true"^^xsd:boolean
+                         ] ;
+     rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+     rdfs:comment "GPU"@en ;
+     rdfs:isDefinedBy "http://cookingbigdata.com/linkeddata/ccinstances" ;
+     rdfs:label "GPU"@en .
+
+
+###  http://www.computerqualification.com/Gamer_Computer
+:Gamer_Computer rdf:type owl:Class ;
+                owl:equivalentClass [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> ;
+                                                             owl:someValuesFrom :QualityCPU
+                                                           ]
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> ;
+                                                             owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                             owl:onClass :Big_RAM
+                                                           ]
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> ;
+                                                             owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                             owl:onClass :Fast_Storage
+                                                           ]
+                                                         ) ;
+                                      rdf:type owl:Class
+                                    ] ;
+                rdfs:subClassOf <http://www.computerqualification.com/#Computer> ;
+                rdfs:comment "Gamer Computer"@en ;
+                rdfs:label "Gamer Computer"@en .
+
+
+###  http://www.computerqualification.com/HighFrecuencyCPU
+:HighFrecuencyCPU rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> ;
+                                        owl:someValuesFrom [ rdf:type rdfs:Datatype ;
+                                                             owl:onDatatype xsd:decimal ;
+                                                             owl:withRestrictions ( [ xsd:minInclusive 3.5
+                                                                                    ]
+                                                                                  )
+                                                           ]
+                                      ] ;
+                  rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+                  rdfs:comment "Represents a proccessor with a high frecuency rate"@en ;
+                  rdfs:label "HighFrecuencyCPU"@en .
+
+
+###  http://www.computerqualification.com/HighFrecuencyModel
+:HighFrecuencyModel rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#ram_frecuency> ;
+                                          owl:someValuesFrom [ rdf:type rdfs:Datatype ;
+                                                               owl:onDatatype xsd:integer ;
+                                                               owl:withRestrictions ( [ xsd:minInclusive 2600
+                                                                                      ]
+                                                                                    )
+                                                             ]
+                                        ] ;
+                    rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#ram> ;
+                    rdfs:comment "Represents a RAM with a high frequency model"@en ;
+                    rdfs:label "HighFrecuencyModel"@en .
+
+
+###  http://www.computerqualification.com/Mid_Range_computer
+:Mid_Range_computer rdf:type owl:Class ;
+                    owl:equivalentClass [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> ;
+                                                                 owl:someValuesFrom :MultiCoreCPU
+                                                               ]
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> ;
+                                                                 owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                 owl:onClass :Small_RAM
+                                                               ]
+                                                             ) ;
+                                          rdf:type owl:Class
+                                        ] ;
+                    rdfs:subClassOf <http://www.computerqualification.com/#Computer> ;
+                    rdfs:label "Mid_Range_computer" .
+
+
+###  http://www.computerqualification.com/MultiCoreCPU
+:MultiCoreCPU rdf:type owl:Class ;
+              owl:equivalentClass [ rdf:type owl:Restriction ;
+                                    owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> ;
+                                    owl:someValuesFrom [ rdf:type rdfs:Datatype ;
+                                                         owl:onDatatype xsd:integer ;
+                                                         owl:withRestrictions ( [ xsd:minExclusive 2
+                                                                                ]
+                                                                              )
+                                                       ]
+                                  ] ;
+              rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+              rdfs:comment "Represents a proccesor with many cores"@en ;
+              rdfs:label "MultiCoreCPU"@en .
+
+
+###  http://www.computerqualification.com/NormalCPU
+:NormalCPU rdf:type owl:Class ;
+           owl:equivalentClass [ owl:intersectionOf ( <http://cookingbigdata.com/linkeddata/ccinstances#cpu>
+                                                      [ rdf:type owl:Class ;
+                                                        owl:complementOf :QualityCPU
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+           rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#cpu> .
+
+
+###  http://www.computerqualification.com/Portable_Computer
+:Portable_Computer rdf:type owl:Class ;
+                   rdfs:subClassOf <http://www.computerqualification.com/#Computer> ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> ;
+                                     owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                     owl:onClass <http://cookingbigdata.com/linkeddata/ccinstances#cpu>
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> ;
+                                     owl:maxQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                                     owl:onClass <http://cookingbigdata.com/linkeddata/ccinstances#ram>
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> ;
+                                     owl:maxQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                                     owl:onClass <http://cookingbigdata.com/linkeddata/ccinstances#storage>
+                                   ] ;
+                   rdfs:label "Portabel computer"@en .
+
+
+###  http://www.computerqualification.com/QualityCPU
+:QualityCPU rdf:type owl:Class ;
+            owl:equivalentClass [ owl:intersectionOf ( :HighFrecuencyCPU
+                                                       :MultiCoreCPU
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ;
+            rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#cpu> ;
+            rdfs:comment "Quality CPU is the union between Multi Core CPU and High Frequency CPU"@en ;
+            rdfs:label "QualityCPU"@en .
+
+
+###  http://www.computerqualification.com/RAM_Capacities
+:RAM_Capacities rdf:type owl:Class ;
+                rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#ram> ;
+                rdfs:comment "Represents the different capacities of a RAM"@en ;
+                rdfs:label "Ram Capacities"@en .
+
+
+###  http://www.computerqualification.com/Slow_Storage
+:Slow_Storage rdf:type owl:Class ;
+              owl:equivalentClass [ rdf:type owl:Restriction ;
+                                    owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#storage_technology> ;
+                                    owl:hasValue "HDD"^^xsd:string
+                                  ] ;
+              rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#storage> ;
+              rdfs:comment "It represents a slow storage; HDD"@en ;
+              rdfs:label "Slow Storage"@en .
+
+
+###  http://www.computerqualification.com/Small_RAM
+:Small_RAM rdf:type owl:Class ;
+           owl:equivalentClass [ owl:intersectionOf ( <http://cookingbigdata.com/linkeddata/ccinstances#ram>
+                                                      [ rdf:type owl:Class ;
+                                                        owl:complementOf :Big_RAM
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+           rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#ram> ;
+           rdfs:comment "Represents the complement of big Ram"@en ;
+           rdfs:label "Small RAM"@en .
+
+
+###  http://www.computerqualification.com/Small_Size_Storage
+:Small_Size_Storage rdf:type owl:Class ;
+                    owl:equivalentClass [ owl:intersectionOf ( <http://cookingbigdata.com/linkeddata/ccinstances#storage>
+                                                               [ rdf:type owl:Class ;
+                                                                 owl:complementOf :Big_Size_Storage
+                                                               ]
+                                                             ) ;
+                                          rdf:type owl:Class
+                                        ] ;
+                    rdfs:subClassOf <http://cookingbigdata.com/linkeddata/ccinstances#storage> ;
+                    rdfs:comment "Represents the complement of the big storage."@en ;
+                    rdfs:label "Small Size Storage"@en .
+
+
+###  http://www.computerqualification.com/#Computer
+<http://www.computerqualification.com/#Computer> rdf:type owl:Class ;
+                                                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> ;
+                                                                   owl:someValuesFrom <http://cookingbigdata.com/linkeddata/ccinstances#cpu>
+                                                                 ] ,
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> ;
+                                                                   owl:someValuesFrom <http://cookingbigdata.com/linkeddata/ccinstances#ram>
+                                                                 ] ,
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> ;
+                                                                   owl:someValuesFrom <http://cookingbigdata.com/linkeddata/ccinstances#storage>
+                                                                 ] ;
+                                                 rdfs:comment "Computer"@en ;
+                                                 rdfs:label "computer"@en .
+
+
+###  http://www.computerqualification.com/16gb_Module
+<http://www.computerqualification.com/16gb_Module> rdf:type owl:Class ;
+                                                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> ;
+                                                                         owl:hasValue 16
+                                                                       ] ;
+                                                   rdfs:subClassOf :RAM_Capacities ;
+                                                   rdfs:label "16gb_Module" .
+
+
+###  http://www.computerqualification.com/32gb_Module
+<http://www.computerqualification.com/32gb_Module> rdf:type owl:Class ;
+                                                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> ;
+                                                                         owl:hasValue 32
+                                                                       ] ;
+                                                   rdfs:subClassOf :RAM_Capacities ;
+                                                   rdfs:label "32gb_Module" .
+
+
+###  http://www.computerqualification.com/4gb_Module
+<http://www.computerqualification.com/4gb_Module> rdf:type owl:Class ;
+                                                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> ;
+                                                                        owl:hasValue 4
+                                                                      ] ;
+                                                  rdfs:subClassOf :RAM_Capacities ;
+                                                  rdfs:label "4gb_Module" .
+
+
+###  http://www.computerqualification.com/64gb_Module
+<http://www.computerqualification.com/64gb_Module> rdf:type owl:Class ;
+                                                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> ;
+                                                                         owl:hasValue 64
+                                                                       ] ;
+                                                   rdfs:subClassOf :RAM_Capacities ;
+                                                   rdfs:label "64gb_Module" .
+
+
+###  http://www.computerqualification.com/8gb_Module
+<http://www.computerqualification.com/8gb_Module> rdf:type owl:Class ;
+                                                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> ;
+                                                                        owl:hasValue 8
+                                                                      ] ;
+                                                  rdfs:subClassOf :RAM_Capacities ;
+                                                  rdfs:label "8gb_Module" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.computerqualification.com/AMD_Athlom
+:AMD_Athlom rdf:type owl:NamedIndividual ,
+                     :NormalCPU ;
+            <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 2 ;
+            <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 2.4 ;
+            rdfs:label "AMD_Athlom" .
+
+
+###  http://www.computerqualification.com/Asus_VivoBook_Pro_OLED
+:Asus_VivoBook_Pro_OLED rdf:type owl:NamedIndividual ,
+                                 :Gamer_Computer ,
+                                 <http://www.computerqualification.com/#Computer> ;
+                        <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :IntelCoreI5 ;
+                        <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Msi_Ram_Module_1 ;
+                        <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ,
+                                                                                      :Terracuda_Big_Disk ;
+                        rdfs:label "Asus VivoBook Pro OLED" .
+
+
+###  http://www.computerqualification.com/Asus_Vivobook
+:Asus_Vivobook rdf:type owl:NamedIndividual ,
+                        :Mid_Range_computer ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :Ryzen5_3400g ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Corsair_Ram_Module_1 ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+               rdfs:label "Asus_VivoBook" .
+
+
+###  http://www.computerqualification.com/Asus_X415
+:Asus_X415 rdf:type owl:NamedIndividual ,
+                    :Gamer_Computer ,
+                    <http://www.computerqualification.com/#Computer> ;
+           <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :IntelCoreI7 ;
+           <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Msi_Ram_Module_1 ;
+           <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+           rdfs:label "Asus X415" .
+
+
+###  http://www.computerqualification.com/Asus_X415ma
+:Asus_X415ma rdf:type owl:NamedIndividual ,
+                      :Basic_Computer ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :Celeron ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Pny_Ram_Module ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+             rdfs:label "Asus X415ma" .
+
+
+###  http://www.computerqualification.com/Asus_X515EA
+:Asus_X515EA rdf:type owl:NamedIndividual ,
+                      :Mid_Range_computer ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :IntelCoreI3 ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Pny_Ram_Module ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+             rdfs:label "Asus X515EA" .
+
+
+###  http://www.computerqualification.com/Asus_Zephyrus
+:Asus_Zephyrus rdf:type owl:NamedIndividual ,
+                        :Desing_Computer ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :Ryzen9_5950X ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :TridentZ_Ram_module ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ,
+                                                                             :Terracuda_Big_Disk ;
+               rdfs:label "Asus Zephyrus" .
+
+
+###  http://www.computerqualification.com/Celeron
+:Celeron rdf:type owl:NamedIndividual ,
+                  :NormalCPU ;
+         <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 2 ;
+         <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 1.6 ;
+         rdfs:label "Celeron" .
+
+
+###  http://www.computerqualification.com/Corsair_Ram_Module_1
+:Corsair_Ram_Module_1 rdf:type owl:NamedIndividual ,
+                               :HighFrecuencyModel ,
+                               <http://www.computerqualification.com/8gb_Module> ;
+                      :Is_Better_RAM_Than :Pny_Ram_Module ;
+                      :Is_Faster_RAM_Than :Pny_Ram_Module ;
+                      <http://cookingbigdata.com/linkeddata/ccinstances#ram_frecuency> 2600 ;
+                      <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> 8 ;
+                      rdfs:label "Corsair_Ram_Module_1" .
+
+
+###  http://www.computerqualification.com/Dell_Inspiron
+:Dell_Inspiron rdf:type owl:NamedIndividual ,
+                        :Mid_Range_computer ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :Ryzen5_3400g ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Corsair_Ram_Module_1 ;
+               <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+               rdfs:label "Dell_Inspiron" .
+
+
+###  http://www.computerqualification.com/HP_240G7
+:HP_240G7 rdf:type owl:NamedIndividual ,
+                   :Mid_Range_computer ;
+          <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :IntelCoreI3 ;
+          <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Corsair_Ram_Module_1 ;
+          <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :Terracuda_Big_Disk ;
+          rdfs:label "Hp_240G7" .
+
+
+###  http://www.computerqualification.com/Hp_15
+:Hp_15 rdf:type owl:NamedIndividual ,
+                :Basic_Computer ;
+       <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :IntelPentium ;
+       <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Pny_Ram_Module ;
+       <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+       rdfs:label "Hp_15" .
+
+
+###  http://www.computerqualification.com/Hp_Pavilion
+:Hp_Pavilion rdf:type owl:NamedIndividual ,
+                      :Portable_Computer ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :Ryzen5_3400g ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Corsair_Ram_Module_1 ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :Terracuda_Big_Disk ;
+             rdfs:label "hp_Pavilion" .
+
+
+###  http://www.computerqualification.com/Huawei_MateBook
+:Huawei_MateBook rdf:type owl:NamedIndividual ,
+                          :Gamer_Computer ;
+                 <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :IntelCoreI7 ;
+                 <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Msi_Ram_Module_1 ;
+                 <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+                 rdfs:label "Huawei MateBook" .
+
+
+###  http://www.computerqualification.com/IntelCoreI3
+:IntelCoreI3 rdf:type owl:NamedIndividual ,
+                      :MultiCoreCPU ;
+             :Has_CPU_Family :IntelCoreI5 ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 4 ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 3.4 ;
+             rdfs:label "Intel Core I3" .
+
+
+###  http://www.computerqualification.com/IntelCoreI5
+:IntelCoreI5 rdf:type owl:NamedIndividual ;
+             :Has_CPU_Family :IntelCoreI7 ;
+             :Has_Competitor :Ryzen5_3400g ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 6 ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 3.6 ;
+             rdfs:label "Intel Core I5" .
+
+
+###  http://www.computerqualification.com/IntelCoreI7
+:IntelCoreI7 rdf:type owl:NamedIndividual ,
+                      :QualityCPU ;
+             :Has_Competitor :Ryzen7_4800H ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 8 ;
+             <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 4.3 ;
+             rdfs:label "Intel Core I7" .
+
+
+###  http://www.computerqualification.com/IntelPentium
+:IntelPentium rdf:type owl:NamedIndividual ,
+                       :NormalCPU ;
+              :Has_CPU_Family :IntelCoreI3 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 2 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 2.8 ;
+              rdfs:label "Intel Pentium" .
+
+
+###  http://www.computerqualification.com/Msi_Ram_Module_1
+:Msi_Ram_Module_1 rdf:type owl:NamedIndividual ;
+                  :Is_Better_RAM_Than :Corsair_Ram_Module_1 ;
+                  <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> 16 ;
+                  rdfs:label "Msi_Ram_Module_1" .
+
+
+###  http://www.computerqualification.com/Pny_Ram_Module
+:Pny_Ram_Module rdf:type owl:NamedIndividual ;
+                <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> 4 ;
+                rdfs:label "Pny_Ram_Module" .
+
+
+###  http://www.computerqualification.com/Ryzen3_3200g
+:Ryzen3_3200g rdf:type owl:NamedIndividual ,
+                       :QualityCPU ;
+              :Has_CPU_Family :Ryzen5_3400g ;
+              :Has_Competitor :IntelCoreI3 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 4 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 3.6 ;
+              rdfs:label "Ryzen3_3200g" .
+
+
+###  http://www.computerqualification.com/Ryzen5_3400g
+:Ryzen5_3400g rdf:type owl:NamedIndividual ,
+                       :QualityCPU ;
+              :Has_CPU_Family :Ryzen7_4800H ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 6 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 3.6 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_model> "AMD Ryzen 5 3400 G" ;
+              rdfs:label "Ryzen5_3400g" .
+
+[ rdf:type owl:NegativePropertyAssertion ;
+   owl:sourceIndividual :Ryzen5_3400g ;
+   owl:assertionProperty :Has_CPU_Family ;
+   owl:targetIndividual :IntelCoreI3
+ ] .
+
+
+###  http://www.computerqualification.com/Ryzen7_4800H
+:Ryzen7_4800H rdf:type owl:NamedIndividual ,
+                       :QualityCPU ;
+              :Has_CPU_Family :Ryzen9_5950X ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 8 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 4.2 ;
+              :Has_Integrated_Graphics "true"^^xsd:boolean ;
+              rdfs:label "Ryzen7_4800H" .
+
+
+###  http://www.computerqualification.com/Ryzen9_5950X
+:Ryzen9_5950X rdf:type owl:NamedIndividual ,
+                       :QualityCPU ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_cores> 16 ;
+              <http://cookingbigdata.com/linkeddata/ccinstances#cpu_frecuency> 4.9 ;
+              :Has_Integrated_Graphics "true"^^xsd:boolean ;
+              rdfs:label "Ryzen9_5950X" .
+
+
+###  http://www.computerqualification.com/SSD
+:SSD rdf:type owl:NamedIndividual ,
+              <http://cookingbigdata.com/linkeddata/ccinstances#storage> ,
+              :Fast_Storage ;
+     <http://cookingbigdata.com/linkeddata/ccinstances#storage_technology> "SSD" ;
+     rdfs:label "SSD" .
+
+
+###  http://www.computerqualification.com/Terracuda_Big_Disk
+:Terracuda_Big_Disk rdf:type owl:NamedIndividual ,
+                             <http://cookingbigdata.com/linkeddata/ccinstances#storage> ,
+                             :Big_Size_Storage ;
+                    <http://cookingbigdata.com/linkeddata/ccinstances#storage_size> 2000 ;
+                    <http://cookingbigdata.com/linkeddata/ccinstances#storage_technology> "HDD" ;
+                    rdfs:label "Terracuda_Big_Disk" .
+
+
+###  http://www.computerqualification.com/TridentZ_Ram_module
+:TridentZ_Ram_module rdf:type owl:NamedIndividual ;
+                     <http://cookingbigdata.com/linkeddata/ccinstances#ram_size> 32 ;
+                     rdfs:label "TridentZ_Ram_module" .
+
+
+###  http://www.computerqualification.com/lenovo_IdealPad
+:lenovo_IdealPad rdf:type owl:NamedIndividual ;
+                 <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :Ryzen7_4800H ;
+                 <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Corsair_Ram_Module_1 ;
+                 <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :SSD ;
+                 rdfs:label "Lenovo IdealPad" .
+
+
+###  http://www.computerqualification.com/lenovo_idelaPad_14AD05
+:lenovo_idelaPad_14AD05 rdf:type owl:NamedIndividual ,
+                                 :Basic_Computer ;
+                        <http://cookingbigdata.com/linkeddata/ccinstances#hasCPU> :AMD_Athlom ;
+                        <http://cookingbigdata.com/linkeddata/ccinstances#hasRAM> :Pny_Ram_Module ;
+                        <http://cookingbigdata.com/linkeddata/ccinstances#hasStorage> :Terracuda_Big_Disk ;
+                        rdfs:label "Lenovo IdealPad 14AD05" .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( <http://cookingbigdata.com/linkeddata/ccinstances#cpu>
+                <http://cookingbigdata.com/linkeddata/ccinstances#ram>
+                <http://cookingbigdata.com/linkeddata/ccinstances#storage>
+                <http://www.computerqualification.com/#Computer>
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( <http://www.computerqualification.com/16gb_Module>
+                <http://www.computerqualification.com/32gb_Module>
+                <http://www.computerqualification.com/4gb_Module>
+                <http://www.computerqualification.com/64gb_Module>
+                <http://www.computerqualification.com/8gb_Module>
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
